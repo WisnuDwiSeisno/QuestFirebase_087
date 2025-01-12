@@ -1,6 +1,5 @@
 package com.example.firebase.ui.viewmodel
 
-import android.net.http.HttpException
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,7 +10,6 @@ import com.example.firebase.repository.MahasiswaRepository
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import java.io.IOException
 
 sealed class HomeUiState {
     data class Success(val mahasiswa: List<Mahasiswa>) : HomeUiState()
@@ -44,6 +42,15 @@ class HomeViewModel(private val mhs: MahasiswaRepository) : ViewModel(){
                         HomeUiState.Success(it)
                     }
                 }
+        }
+    }
+    fun deleteMhs(mahasiswa: Mahasiswa){
+        viewModelScope.launch {
+            try {
+                mhs.deleteMahasiswa(mahasiswa)
+            } catch (e: Exception){
+                mhsUIState = HomeUiState.Error(e)
+            }
         }
     }
 }
