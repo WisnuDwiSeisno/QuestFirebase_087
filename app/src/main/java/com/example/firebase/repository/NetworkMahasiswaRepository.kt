@@ -23,7 +23,7 @@ class NetworkMahasiswaRepository(
                     trySend(mhsList) // try send memberikan fungsi untuk mengirim data ke flow
                 }
             }
-        awaitClose{
+        awaitClose {
             mhsCollection.remove()
         }
     }
@@ -31,13 +31,20 @@ class NetworkMahasiswaRepository(
     override suspend fun insertMahasiswa(mahasiswa: Mahasiswa) {
         try {
             firestore.collection("Mahasiswa").add(mahasiswa).await()
-        } catch (e: Exception){
+        } catch (e: Exception) {
             throw Exception("Gagal Menambahkan Data Mahasiswa: ${e.message}")
         }
     }
 
     override suspend fun updateMahasiswa(nim: String, mahasiswa: Mahasiswa) {
-        TODO("Not yet implemented")
+        try {
+            firestore.collection("Mahasiswa")
+                .document(mahasiswa.nim)
+                .set(mahasiswa)
+                .await()
+        } catch (e: Exception) {
+            throw Exception("Gagal mengupdate data mahasiswa: ${e.message}")
+        }
     }
 
     override suspend fun deleteMahasiswa(nim: String) {
