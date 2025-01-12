@@ -58,8 +58,18 @@ class NetworkMahasiswaRepository(
         }
     }
 
-    override suspend fun getMahasiswaByNIM(nim: String): Flow<List<Mahasiswa>> {
-        TODO("Not yet implemented")
+    override suspend fun getMahasiswaByNIM(nim: String): Flow<Mahasiswa> = callbackFlow {
+        val listMhs = firestore.collection("Mahasiswa")
+            .document()
+            .addSnapshotListener { value, error ->
+                if (value != null){
+                    val mhs = value.toObject(Mahasiswa::class.java)!!
+                    trySend(mhs)
+                }
+            }
+        awaitClose {
+            listMhs.remove()
+        }
     }
 
 }
