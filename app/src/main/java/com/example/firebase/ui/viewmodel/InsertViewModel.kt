@@ -30,6 +30,9 @@ class InsertViewModel(private val mhs: MahasiswaRepository) : ViewModel() {
             jenis_kelamin = if (event.jenis_kelamin.isNotEmpty()) null else "Jenis Kelamin tidak boleh kosong",
             alamat = if (event.alamat.isNotEmpty()) null else "Alamat tidak boleh kosong",
             kelas = if (event.kelas.isNotEmpty()) null else "Kelas tidak boleh kosong",
+            judul = if (event.judul.isNotEmpty()) null else "Judul tidak boleh kosong",
+            dospem1 = if (event.dospem1.isNotEmpty()) null else "Dosen Pembimbing 1 tidak boleh kosong",
+            dospem2 = if (event.dospem2.isNotEmpty()) null else "Dosen Pembimbing 2 tidak boleh kosong",
             angkatan = if (event.angkatan.isNotEmpty()) null else "Angkatan tidak boleh kosong",
         )
         uiEvent = uiEvent.copy(isEntryValid = errorState)
@@ -80,11 +83,14 @@ data class FormErrorState(
     val jenis_kelamin: String? = null,
     val alamat: String? = null,
     val kelas: String? = null,
+    val judul: String? = null,
+    val dospem1: String? = null,
+    val dospem2: String? = null,
     val angkatan: String? = null,
 ) {
     fun isValid(): Boolean {
         return nim == null && nama == null && jenis_kelamin == null &&
-                alamat == null && kelas == null && angkatan == null
+                alamat == null && kelas == null && angkatan == null && judul == null && dospem1 == null && dospem2 == null
     }
 }
 
@@ -95,6 +101,9 @@ fun MahasiswaEvent.toMhsModel(): Mahasiswa = Mahasiswa(
     jenis_kelamin = jenis_kelamin,
     alamat = alamat,
     kelas = kelas,
+    judul = judul,
+    dospem1 = dospem1,
+    dospem2 = dospem2,
     angkatan = angkatan
 )
 
@@ -105,5 +114,20 @@ data class MahasiswaEvent(
     val jenis_kelamin: String = "",
     val alamat: String = "",
     val kelas: String = "",
+    val judul: String = "",
+    val dospem1: String = "",
+    val dospem2: String = "",
     val angkatan: String = "",
+)
+
+fun Mahasiswa.toInsertUiEvent(): MahasiswaEvent = MahasiswaEvent(
+    nim = nim,
+    nama = nama,
+    jenis_kelamin = jenis_kelamin,
+    alamat = alamat,
+    kelas = kelas,
+    judul = judul,
+    dospem1 = dospem1,
+    dospem2 = dospem2,
+    angkatan = angkatan
 )

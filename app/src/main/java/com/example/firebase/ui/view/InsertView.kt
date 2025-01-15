@@ -46,7 +46,8 @@ fun InsertMhsView(
     onBack: () -> Unit,
     onNavigate: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: InsertViewModel = viewModel(factory = PenyediaViewModel.Factory)
+    viewModel: InsertViewModel = viewModel(factory = PenyediaViewModel.Factory),
+
 ){
     val uiState = viewModel.uiState // State Utama untuk Loading, Success, Error
     val uiEvent = viewModel.uiEvent // State Untuk Form dan Validasi
@@ -98,7 +99,6 @@ fun InsertMhsView(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp)
         ){
             InsertBodyMhs(
                 uiState = uiEvent,
@@ -143,7 +143,6 @@ fun InsertBodyMhs(
                     color = Color.White,
                     modifier = Modifier
                         .size(20.dp)
-                        .padding(end = 8.dp)
                 )
                 Text("Loading...")
             } else {
@@ -196,8 +195,6 @@ fun FormMahasiswa(
             text = errorState.nim ?: "",
             color = Color.Red
         )
-
-        Spacer(modifier = Modifier.height(16.dp))
         Text(text = "Jenis Kelamin")
         Row(
             modifier = Modifier.fillMaxWidth()
@@ -236,8 +233,6 @@ fun FormMahasiswa(
             text = errorState.alamat ?: "",
             color = Color.Red
         )
-
-        Spacer(modifier = Modifier.height(16.dp))
         Text(text = "Kelas")
         Row {
             kelas.forEach { kelas ->
@@ -257,6 +252,51 @@ fun FormMahasiswa(
         }
         Text(
             text = errorState.kelas ?: "",
+            color = Color.Red
+        )
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.judul,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(judul = it))
+            },
+            label = { Text("Judul Skripsi") },
+            isError = errorState.angkatan != null,
+            placeholder = { Text("Masukkan Judul Skripsi") }
+        )
+        Text(
+            text = errorState.judul ?: "",
+            color = Color.Red
+        )
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.dospem1,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(dospem1 = it))
+            },
+            label = { Text("Dosen Pembimbing 1") },
+            isError = errorState.dospem1 != null,
+            placeholder = { Text("Masukkan Dosen Pembimbing 1") }
+        )
+        Text(
+            text = errorState.dospem1 ?: "",
+            color = Color.Red
+        )
+
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = mahasiswaEvent.dospem2,
+            onValueChange = {
+                onValueChange(mahasiswaEvent.copy(dospem2 = it))
+            },
+            label = { Text("Dosen Pembimbing 2") },
+            isError = errorState.dospem2 != null,
+            placeholder = { Text("Masukkan Dosen Pembimbing 2") }
+        )
+        Text(
+            text = errorState.dospem2 ?: "",
             color = Color.Red
         )
 
